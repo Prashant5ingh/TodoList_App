@@ -17,7 +17,7 @@ export async function addTask(task) {
     console.log("addtask backend service calls")
 
     try {
-        const res = await axios.post('http://localhost:5500/addtask', task)
+        const res = await axios.post('https://prime17.pythonanywhere.com/addtask', task)
         // console.log(res.data)
         return res.data;
     }
@@ -30,7 +30,7 @@ export async function addTask(task) {
 export async function deleteTask(taskid) {
     console.log("deletetask backend service calls")
     try {
-        const res = await axios.delete(`http://localhost:5500/deletetask/${taskid}`)
+        const res = await axios.delete(`https://prime17.pythonanywhere.com/deletetask/${taskid}`)
         return res.data;
     }
     catch (error) {
@@ -42,7 +42,7 @@ export async function deleteTask(taskid) {
 export async function updateTask(taskid, updatedTask, toggleComplete) {
     console.log("updateTask backend service calls")
     try {
-        const res = await axios.put(`http://localhost:5500/updatetask/${taskid}`,{content: updatedTask, completed: toggleComplete})
+        const res = await axios.put(`https://prime17.pythonanywhere.com/updatetask/${taskid}`,{content: updatedTask, completed: toggleComplete})
         return res.data;
     }
     catch (error) {
