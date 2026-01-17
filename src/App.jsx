@@ -18,7 +18,7 @@ import Github, { githubInfoLoader } from './components/react_router/Github/Githu
 import NotFound from './components/react_router/Home/NotFound.jsx'
 import ContextAPI from './components/contextAPI/ContextAPI.jsx'
 import ThemeContextAPI from './components/contextAPI/contextAPI_Project/ThemeContextAPI.jsx'
-// import Todos from './components/Todos_ContextAPI/Todos.jsx'
+import ContextTodo from './components/Todos_ContextAPI/Todos.jsx'
 import AddTodo from './components/Redux-toolkit/main_react-redux/AddTodo.jsx'
 import Todos from './components/Redux-toolkit/main_react-redux/Todos.jsx'
 
@@ -78,9 +78,11 @@ function App() {
       {/* <BgChange /> */}
       {/* <PasswordGen /> */}
       {/* <Currency />  */}
-      {/* <ContextAPI /> */}
-      {/* <ThemeContextAPI/> */}
-      {/* <Todos /> */}
+
+      {/* <ContextAPI />
+      <ThemeContextAPI/> */}
+
+      {/* <ContextTodo /> */}
 
       <h1>Learn about redux toolkit</h1>
       <AddTodo />
