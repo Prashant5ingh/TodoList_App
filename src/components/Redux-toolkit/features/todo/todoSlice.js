@@ -22,7 +22,8 @@ export const todoSlice = createSlice({
                 id: action.payload.id,  // generating unique id using nanoid if id is not provided in payload
                 // id: state.nextId, // Use the counter as the ID
                 // id: nanoid(),  // generating unique id using nanoid if id is not provided in payload
-                text: action.payload.text // payload itself is a object. So, we can further access its properties like  via ".". payload is the data we are passing to the reducer to update the state.
+                text: action.payload.text, // payload itself is a object. So, we can further access its properties like  via ".". payload is the data we are passing to the reducer to update the state.
+                completed: action.payload.completed || false // default value false
                 
             }
             state.todos.push(todo)  // array to push and object to add property
@@ -32,11 +33,25 @@ export const todoSlice = createSlice({
         removeTodo: (state, action) => {
             state.todos = state.todos.filter((todo) => todo.id !== action.payload)
         },
+        toggleComplete: (state,action) => {
+            const todo = state.todos.find((todo) => todo.id === action.payload)
+            // console.log("toggleTodo",todo)
+            if (todo) {
+                todo.completed = !todo.completed
+            }
+        },
+        updateTodo: (state, action) => {
+            const todo = state.todos.find((todo) => todo.id === action.payload.id );
+            
+            if (todo) {
+                todo.text = action.payload.text;
+            }
+        },
     } // contains property and functions
 })
 
 // exporting the reducers functionallity to use in the components.
-export const { addTodo, removeTodo } = todoSlice.actions
+export const { addTodo, removeTodo,toggleComplete, updateTodo } = todoSlice.actions
 
 // Store will update the state or values given by registered reducer inside the store 
 export default todoSlice.reducer

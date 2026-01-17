@@ -1,26 +1,76 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { removeTodo } from '../features/todo/todoSlice'
-import { deleteTask, addTask } from './Service'
+import { removeTodo,toggleComplete, updateTodo } from '../features/todo/todoSlice'
+import { deleteTask, addTask, updateTask } from './Service'
 
 
 function Todos() {
+  const [isTodoEditable, setIsTodoEditable] = useState(null) // By default todo is not editable. 
+  const [todoMsg, setTodoMsg] = useState("")
   const selectedTodos = useSelector(state => state.todos) // it gives access of state as parameter
   const dispatch = useDispatch()
 
-
+  // console.log("Selected Todos:", selectedTodos);
+  // selectedTodos.map((todo) => {console.log("Todo Item:", todo) 
+  //   setTodoMsg(todo.text)});
   return (
     <>
       <h1 className="mt-10 font-bold text-3xl">Todos</h1>
       <ul className="list-none">
         {selectedTodos.map((todo) => (
           <li
-            className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded-2xl"
+            className="mt-4 flex justify-between items-center bg-zinc-800 px-14 py-2 rounded-2xl"
             key={todo.id}
           >
-
-            <div className='text-white'>{todo.text}</div>
+            <input
+                type="checkbox"
+                className="cursor-pointer"
+                checked={todo.completed}
+                onChange={() => {dispatch(toggleComplete(todo.id))
+                // console.log("toggle",!todo.completed)
+                updateTask(todo.id, todo.text, !todo.completed);
+              
+              }
+              } // dispatching action to toggle completed status
+                disabled={isTodoEditable}
+            />
+            <input
+                type="text"
+                className={`text-white px-8 border outline-none w-full bg-transparent rounded-lg ${
+                    isTodoEditable === todo.id ? "border-black/10 px-2" : "border-transparent"
+                } ${todo.completed ? "line-through" : ""}`}
+              
+                // value={todoMsg}
+                value={isTodoEditable === todo.id ? todoMsg : todo.text}
+                
+                onChange={(e) => setTodoMsg(e.target.value)}
+                readOnly={isTodoEditable !== todo.id}
+            />
             {/* <div className='text-white'>{todo.text}</div> */}
+
+            {/* Edit, Save Button */}
+            <button
+                className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0 disabled:opacity-50"
+                onClick={() => {
+                    if (todo.completed) return;
+
+                    if (isTodoEditable === todo.id) {
+                      // console.log("Saving todo:", {...todo, text: todoMsg},todo.id);
+                        dispatch(updateTodo({...todo, text: todoMsg})) // spreading all previous key value pair and updating only todo(Msg) key value pair. 
+                        updateTask(todo.id, todoMsg, todo.completed);
+                      //  console.log("Updated todoMsg:", todoMsg,todo.id,todo.completed);
+                        setIsTodoEditable(null)
+                    } else {
+                      setIsTodoEditable(todo.id);
+                      // setIsTodoEditable((prev) => !prev);
+                      setTodoMsg(todo.text); // Set the state to the current todo's text 
+                    }
+                }}
+                disabled={todo.completed}
+            >
+                {isTodoEditable === todo.id ? "📁" : "✏️"}
+            </button>    
+
             <button
               onClick={() => {
                 dispatch(removeTodo(todo.id)) // or we can write like dispatch(removeTodo({id:todo.id})) & deleteTask({id:todo.id}) without adding extra { }

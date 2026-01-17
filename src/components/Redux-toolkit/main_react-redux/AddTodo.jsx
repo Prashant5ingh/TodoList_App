@@ -17,7 +17,7 @@ function AddTodo() {  // using usedispatch
     tasks.forEach(task => {
 
       // dispatch(addTodo(task.content))
-      dispatch(addTodo({id:task.id,text:task.content}))
+      dispatch(addTodo({id:task.id,text:task.content,completed:task.completed}))  // dispatching addTodo action to the reducer with payload as input
     })
     
   }
@@ -31,10 +31,10 @@ function AddTodo() {  // using usedispatch
     e.preventDefault();
      if(input === '') return;
      const newId = nanoid();
-    dispatch(addTodo({id:newId,text:input}))  // dispatching addTodo action to the reducer with payload as input
+    dispatch(addTodo({id:newId,text:input,completed:false}))  // dispatching addTodo action to the reducer with payload as input
     setInput('') // to clear input field after adding a todo
     
-    addTask({ id:newId,content: input }); // content is the property name expected by the backend
+    addTask({ id:newId,content: input, completed:false}); // content is the property name expected by the backend
   }
 
 
